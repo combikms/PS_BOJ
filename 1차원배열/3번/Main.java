@@ -4,22 +4,26 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        int n = sc.nextInt();
+        int arr[] = new int[n];
 
-        int num = sc.nextInt();
-        int target = sc.nextInt();
-        
-
-        int array[] = new int[num];
-
-        for (int i=0; i<num; i++) {
-            array[i] = sc.nextInt();
+        for (int i=0; i<n; i++){
+            arr[i] = sc.nextInt();
         }
-        
-        for (int i=0; i<num; i++){
-            if (array[i] < target){
-                System.out.printf("%d ", array[i]);
-            }            
+
+        int min = arr[0];
+        int max = arr[0];
+
+        for (int i=0; i<n; i++) {
+            if (arr[i] < min) {
+                min = arr[i];
+            }
+            if (arr[i] > max) {
+                max = arr[i];
+            }
         }
+
+        System.out.printf("%d %d", min, max);
 
         sc.close();
     }    
