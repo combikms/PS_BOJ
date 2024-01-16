@@ -7,15 +7,34 @@ public class Main {
              
         Scanner sc = new Scanner(System.in);
 
-        int a = sc.nextInt();
-        int b = sc.nextInt();
-        int c = sc.nextInt();
-        int d = sc.nextInt();
-        int e = sc.nextInt();
-        int f = sc.nextInt();
+        int N = sc.nextInt();
 
-        System.out.printf("%d %d %d %d %d %d", 1-a, 1-b, 2-c, 2-d, 2-e, 8-f);
+        for (int i=0; i<N-1; i++) {            
+            System.out.print(" " * (N-1-i));
+            System.out.print("*" * (2*(i+1)-1));
+            System.out.print("\n");
+        }
 
+        System.out.print("*" * (2*N-1));
+
+        for (int i=0; i<N-1; i++) {
+            Systme.out.print(" " * (i+1));
+            System.out.print("*" * 2*(N-i)-3);
+        }
+        
+
+        /*
+    *           공4 별1
+   ***          공3 별3
+  *****         공2 별5
+ *******        공1 별7
+*********       공0 별9
+ *******        공1 별7
+  *****         공2 별5
+   ***          공3 별3
+    *           공4 별1
+         */
+      
         sc.close();
 
     }
