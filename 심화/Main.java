@@ -2,54 +2,53 @@ package Baekjoon.심화;
 import java.util.Scanner;
 
 public class Main {
+
+    public static int check_group_word(String S) {
+
+        for (int i=0; i<S.length(); i++) {
+
+            if (i<S.length()-1) {
+                while (S.charAt(i) == S.charAt(i+1)) {
+                    i++;
+                    if (i == S.length()-1) {
+                        break;
+                    }                    
+                }
+            }
+
+            if (i != S.length()-1) {
+                for (int j=i; j<S.length(); j++) {
+                    if (S.charAt(i) == S.charAt(j)){
+                        if (j-i > 1) {
+                            return 0;
+                        }
+                    }
+                }
+            }                     
+        }
+
+        return 1;
+    }
     
     public static void main(String[] args) {
              
         Scanner sc = new Scanner(System.in);
 
-        String S = sc.nextLine();
-        
+        int T = sc.nextInt();
+        sc.nextLine();
+
         int count = 0;
 
-        for (int i=0; i<S.length(); i++) {
+        for (int i=0; i<T; i++) {
+            String S = sc.nextLine();
 
-            
-            if (S.charAt(i) == 'c' && i < S.length() - 1) {
-                if (S.charAt(i+1) == '=' || 
-                    S.charAt(i+1) == '-') {
-                        i++;                        
-                }
-            }
-
-            else if (S.charAt(i) == 'd') {
-                if (i < S.length() - 2 && S.charAt(i+1) == 'z' && S.charAt(i+2) == '=') {
-                    i+=2;
-                }                     
-                else if (i < S.length() - 1 && S.charAt(i+1) == '-') {
-                    i++;                        
-                }
-            }
-
-            else if (i < S.length() - 1 && S.charAt(i) == 'l' && S.charAt(i+1) == 'j') {
-                i++;
-            }
-
-            else if (i < S.length() - 1 && S.charAt(i) == 'n' && S.charAt(i+1) == 'j') {
-                i++;
-            }
-
-            else if (i < S.length() - 1 && S.charAt(i) == 's' && S.charAt(i+1) == '=') {
-                i++;
-            }
-
-            else if (i < S.length() - 1 && S.charAt(i) == 'z' && S.charAt(i+1) == '=') {
-                i++;
-            }
-            count++;
+            if (check_group_word(S) == 1) {
+                count++;
+            }            
         }
 
-        System.out.print(count);        
-        
+        System.out.print(count);
+
         sc.close();        
 
     }
