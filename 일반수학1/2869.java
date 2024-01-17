@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
     
     public static int f(int A, int B, int V) {
-       
+        
         return ((V - B - 1) / (A - B)) + 1;
     }
    
