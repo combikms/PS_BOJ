@@ -9,6 +9,27 @@ import java.util.Random;
 
 public class Main {
 
+    public static class pos {
+        int x;
+        int y;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        int N = Integer.parseInt(br.readLine());
+        pos[] arr = new pos[N];
+        for (int i = 0; i < N; i++) {
+            String[] input = br.readLine().split(" ");
+            arr[i] = new pos();
+            arr[i].x = Integer.parseInt(input[0]);
+            arr[i].y = Integer.parseInt(input[1]);                       
+        }
+
+        br.close();        
+    }
+    
+
     public static void Bubble_Sort(int[] arr) {        
         for (int i=0; i<arr.length - 1; i++) {
             for (int j=0; j<arr.length-i-1; j++) {
@@ -66,21 +87,19 @@ public class Main {
         }
 
         int[] sorted = new int[arr.length];
-        for (int i=0; i<arr.length; i++) {
+        for (int i=arr.length-1; i>=0; i--) {
             sorted[count[arr[i]] - 1] = arr[i];
             count[arr[i]]--;
         }
 
-        for (int i=0; i<arr.length; i++) {
-            arr[i] = sorted[arr.length - 1 - i];
-        }        
+        System.arraycopy(sorted, 0, arr, 0, arr.length);        
     }
     
 
     public static void Print_All(int[] arr) throws IOException {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         for (int i = 0; i < arr.length; i++) {
-            bw.write(arr[i]+"");
+            bw.write(arr[i] + "\n");
         }
         bw.flush();
         bw.close();
@@ -96,21 +115,6 @@ public class Main {
 
     public static int Middle(int[] arr) {
         return arr[arr.length/2];
-    }
-        
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));                
-        
-        String input = br.readLine();
-        int[] arr = new int[input.length()];
-        for (int i = 0; i < input.length(); i++) {
-            arr[i] = input.charAt(i) - '0';
-        }
+    }       
 
-        Counting_Sort(arr);
-        Print_All(arr);
-
-        br.close();        
-    }
-    
 }
