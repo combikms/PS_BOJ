@@ -11,7 +11,7 @@ public class Main {
             return 0;
         }
         else {
-            for (long i=2; i<Math.sqrt(N); i++) {
+            for (long i=2; i<=(long)Math.sqrt(N); i++) {
                 if (N % i == 0) {
                     return 0;
                 }
@@ -29,11 +29,11 @@ public class Main {
         for (int i=0; i<T; i++) {
             long n = Long.parseLong(br.readLine());
             while (true) {
-                n++;
                 if (isPrime(n) == 1) {
                     bw.write(n+"\n");
                     break;
                 }
+                n++;
             }
         }
         bw.flush();
