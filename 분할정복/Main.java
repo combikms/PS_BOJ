@@ -5,58 +5,33 @@ import java.io.OutputStreamWriter;
 import java.io.IOException;
 
 public class Main {
-    private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    private static long C;
 
-    public static int isFull(int[][] arr, int s_x, int s_y, int length) {
-        int color = arr[s_x][s_y];
-        for (int i = s_x; i < s_x + length; i++) {
-            for (int j = s_y; j < s_y + length; j++) {
-                if (arr[i][j] != color) {
-                    return -1;
-                }
-            }
-        }
-        return color;
-    }
-
-    public static void divide(int[][] arr, int s_x, int s_y, int length) throws IOException {
-
-        int temp = isFull(arr, s_x, s_y, length);
-
-        if (temp > 0) {
-            bw.write("1");
-            return;
-        } else if (temp == 0) {
-            bw.write("0");
-            return;
+    public static long fastpow(long A, long B) {
+        if (B == 0) {
+            return 1;
         }
 
-        bw.write("(");
-        divide(arr, s_x, s_y, length / 2);
-        divide(arr, s_x + (length / 2), s_y, length / 2);
-        divide(arr, s_x, s_y + (length / 2), length / 2);
-        divide(arr, s_x + (length / 2), s_y + (length / 2), length / 2);
-        bw.write(")");
+        long half = fastpow(A, B / 2);
+        long temp = (half * half) % C;
 
-        return;
+        if (B % 2 == 0) {
+            return temp;
+        } else {
+            return (A * temp) % C;
+        }
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int N = Integer.parseInt(br.readLine());
-        int[][] arr = new int[N][N];
+        String[] input = br.readLine().split(" ");
+        long A = Long.parseLong(input[0]);
+        long B = Long.parseLong(input[1]);
+        C = Long.parseLong(input[2]);
 
-        String input;
-        for (int i = 0; i < N; i++) {
-            input = br.readLine();
-            for (int j = 0; j < N; j++) {
-                arr[j][i] = input.charAt(j) - '0';
-            }
-        }
-
-        divide(arr, 0, 0, N);
-        bw.flush();
+        bw.write(fastpow(A, B) % C + "");
 
         bw.close();
         br.close();
