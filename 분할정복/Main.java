@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 import java.io.IOException;
 
 public class Main {
-    private static final long MOD = 1000;
+    private static long MOD = 1000000007;
 
     public static long[][] multiply(long[][] A, long[][] B) {
         long[][] C = new long[A.length][B[0].length];
@@ -41,25 +41,16 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String[] input = br.readLine().split(" ");
-        int N = Integer.parseInt(input[0]);
-        long B = Long.parseLong(input[1]);
+        long N = Long.parseLong(br.readLine());
 
-        long[][] A = new long[N][N];
-        for (int i = 0; i < N; i++) {
-            input = br.readLine().split(" ");
-            for (int j = 0; j < N; j++) {
-                A[i][j] = Long.parseLong(input[j]);
-            }
-        }
+        long[][] fibo = new long[2][2];
+        fibo[0][0] = 1;
+        fibo[0][1] = 1;
+        fibo[1][0] = 1;
+        fibo[1][1] = 0;
 
-        long[][] C = fastpow(A, B);
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                bw.write(C[i][j] % MOD + " ");
-            }
-            bw.write("\n");
-        }
+        long[][] result = fastpow(fibo, N);
+        bw.write(result[0][1] % MOD + "\n");
         bw.flush();
 
         bw.close();
