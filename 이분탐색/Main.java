@@ -33,34 +33,13 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        long N = Long.parseLong(br.readLine());
-        long k = Long.parseLong(br.readLine());
+        int N = Integer.parseInt(br.readLine());
+        int[] A = new int[N];
 
-        long start = 1;
-        long end = N * N;
-
-        long mid = 0;
-        long count = 0;
-        long result = 0;
-
-        while (start <= end) {
-            count = 0;
-            mid = start + (end - start) / 2;
-
-            for (int i = 1; i <= N; i++) {
-                count += Math.min(mid / i, N);
-            }
-
-            if (count < k) {
-                start = mid + 1;
-            } else {
-                result = mid;
-                end = mid - 1;
-            }
+        String[] input = br.readLine().split(" ");
+        for (int i = 0; i < N; i++) {
+            A[i] = Integer.parseInt(input[i]);
         }
-
-        bw.write(result + "");
-        bw.flush();
 
         bw.close();
         br.close();
