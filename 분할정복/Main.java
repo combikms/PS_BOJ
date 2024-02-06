@@ -7,33 +7,26 @@ import java.io.IOException;
 public class Main {
     private static long MOD = 1000000007;
 
-    public static long[][] multiply(long[][] A, long[][] B) {
-        long[][] C = new long[A.length][B[0].length];
-        for (int i = 0; i < A.length; i++) {
-            for (int j = 0; j < B[0].length; j++) {
-                for (int k = 0; k < A[0].length; k++) {
-                    C[i][j] += (A[i][k] * B[k][j]) % MOD;
-                }
-            }
+    public static long fact(int n) {
+        long result = 1;
+        for (int i = 2; i <= n; i++) {
+            result = (result * i) % MOD;
         }
-        return C;
+        return result;
     }
 
-    public static long[][] fastpow(long[][] C, long B) {
-        long[][] result = new long[C.length][C[0].length];
-        if (B == 0) {
-            for (int i = 0; i < C.length; i++) {
-                result[i][i] = 1;
-            }
-            return result;
+    public static long fastpow(long bs, long exp) {
+        if (exp == 0) {
+            return 1;
         }
 
-        long[][] half = fastpow(C, B / 2);
+        long half = fastpow(bs, exp / 2);
+        long temp = (half * half) % MOD;
 
-        if (B % 2 == 0) {
-            return multiply(half, half);
+        if (exp % 2 == 0) {
+            return temp;
         } else {
-            return multiply(C, multiply(half, half));
+            return (bs * temp) % MOD;
         }
     }
 
@@ -41,16 +34,13 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        long N = Long.parseLong(br.readLine());
+        String[] input = br.readLine().split(" ");
+        int N = Integer.parseInt(input[0]);
+        int K = Integer.parseInt(input[1]);
 
-        long[][] fibo = new long[2][2];
-        fibo[0][0] = 1;
-        fibo[0][1] = 1;
-        fibo[1][0] = 1;
-        fibo[1][1] = 0;
-
-        long[][] result = fastpow(fibo, N);
-        bw.write(result[0][1] % MOD + "\n");
+        //핵심: 모듈러 연산을 끼면서 나눗셈을 하기 어렵기 때문에 저런 곱셈 형태로 바꾼 것
+        long ans = fact(N) % MOD * fastpow((fact(K) * fact(N - K)) % MOD, MOD - 2) % MOD;
+        bw.write(ans + "");
         bw.flush();
 
         bw.close();
