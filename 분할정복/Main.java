@@ -34,14 +34,18 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String[] input = br.readLine().split(" ");
-        int N = Integer.parseInt(input[0]);
-        int K = Integer.parseInt(input[1]);
+        String[] input;
+        while (true) {
+            input = br.readLine().split(" ");
+            if (Integer.parseInt(input[0]) == 0) {
+                break;
+            }
 
-        //핵심: 모듈러 연산을 끼면서 나눗셈을 하기 어렵기 때문에 저런 곱셈 형태로 바꾼 것
-        long ans = fact(N) % MOD * fastpow((fact(K) * fact(N - K)) % MOD, MOD - 2) % MOD;
-        bw.write(ans + "");
-        bw.flush();
+            for (int i = 0; i < Integer.parseInt(input[0]); i++) {
+
+            }
+
+        }
 
         bw.close();
         br.close();
