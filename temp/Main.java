@@ -67,15 +67,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String[] input = br.readLine().split(" ");
-        int teleports = Integer.parseInt(input[0]) + Integer.parseInt(input[1]);
-
-        for (int i = 0; i < teleports; i++) {
-            input = br.readLine().split(" ");
-            board[Integer.parseInt(input[0])][1] = Integer.parseInt(input[1]);
-        }
-        BFS();
-        bw.write(board[100][0] - 1 + "");
+        
 
         bw.close();
         br.close();
