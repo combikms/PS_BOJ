@@ -2,10 +2,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.io.IOException;
 
 public class Main {
-    private static int[] parent;
+    private static HashMap<String, String> parent = new HashMap<>();
     private static int[] rank;
 
     public static void union(int a, int b) {
@@ -37,41 +38,16 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String[] input;
-        int N = Integer.parseInt(br.readLine());
-        int M = Integer.parseInt(br.readLine());
+        int T = Integer.parseInt(br.readLine());
 
-        parent = new int[N];
-        rank = new int[N];
-        for (int i = 0; i < N; i++) {
-            parent[i] = i;
-        }
-
-        for (int i = 0; i < N; i++) {
-            input = br.readLine().split(" ");
-            for (int j = 0; j < N; j++) {
-                if (Integer.parseInt(input[j]) == 1) {
-                    union(i, j);
-                }
+        String input[];
+        for (int i = 0; i < T; i++) {
+            int F = Integer.parseInt(br.readLine());
+            for (int j = 0; j < F; j++) {
+                input = br.readLine().split(" ");
+                union(input[0], input[1]);
             }
         }
-
-        input = br.readLine().split(" ");
-        int root = find(Integer.parseInt(input[0]) - 1);
-        boolean isAvailable = true;
-        for (int i = 1; i < M; i++) {
-            if (find(Integer.parseInt(input[i]) - 1) != root) {
-                isAvailable = false;
-                break;
-            }
-        }
-
-        if (isAvailable) {
-            bw.write("YES");
-        } else {
-            bw.write("NO");
-        }
-        bw.flush();
 
         bw.close();
         br.close();
