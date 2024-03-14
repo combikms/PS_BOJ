@@ -66,6 +66,7 @@ int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    cout.tie(NULL);
 
     UnionFind uf(5); // 5개의 원소를 갖는 Union-Find 자료 구조 생성
 
