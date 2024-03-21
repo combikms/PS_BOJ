@@ -2,6 +2,7 @@
     "files.associations": {
         "xiosbase": "cpp",
         "xtree": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "ios": "cpp"
     }
 }
