@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "xiosbase": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "queue": "cpp"
     }
 }
