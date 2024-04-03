@@ -22,29 +22,25 @@ void BFS(int start)
         if (cur == K)
             break;
 
-        if (cur < K * 2 - 1)
+        // 순간 이동
+        if (cur * 2 < road.size() && road[cur * 2] == 0)
         {
-            if (road[cur + 1] == 0)
-            {
-                road[cur + 1] = road[cur] + 1;
-                q.push(cur + 1);
-            }
+            road[cur * 2] = road[cur];
+            q.push(cur * 2);
         }
-        if (cur > 0)
+
+        // 앞으로
+        if (cur + 1 < road.size() && road[cur + 1] == 0)
         {
-            if (road[cur - 1] == 0)
-            {
-                road[cur - 1] = road[cur] + 1;
-                q.push(cur - 1);
-            }
+            road[cur + 1] = road[cur] + 1;
+            q.push(cur + 1);
         }
-        if (cur < K)
+
+        // 뒤로
+        if (cur - 1 >= 0 && road[cur - 1] == 0)
         {
-            if (road[cur * 2] == 0)
-            {
-                road[cur * 2] = road[cur];
-                q.push(cur * 2);
-            }
+            road[cur - 1] = road[cur] + 1;
+            q.push(cur - 1);
         }
     }
 }
