@@ -1,20 +1,54 @@
 #include <iostream>
 #include <vector>
+#include <queue>
+
 using namespace std;
 
-vector<char> stack;
-int sp = -1;
+int N = 0;
+int K = 0;
+vector<int> road;
+vector<bool> visited;
+queue<int> q;
 
-void PUSH(char X)
+void BFS(int start)
 {
-    stack.push_back(X);
-    sp++;
-}
+    road[start] = 1;
+    visited[start] = true;
+    q.push(start);
 
-void POP()
-{
-    stack.pop_back();
-    sp--;
+    while (!q.empty())
+    {
+        int cur = q.front();
+        q.pop();
+
+        if (cur < K * 2 - 1)
+        {
+            if (!visited[cur + 1])
+            {
+                visited[cur + 1] = true;
+                road[cur + 1] = road[cur] + 1;
+                q.push(cur + 1);
+            }
+        }
+        if (cur > 0)
+        {
+            if (!visited[cur - 1])
+            {
+                visited[cur - 1] = true;
+                road[cur - 1] = road[cur] + 1;
+                q.push(cur - 1);
+            }
+        }
+        if (cur < K)
+        {
+            if (!visited[cur * 2])
+            {
+                visited[cur * 2] = true;
+                road[cur * 2] = road[cur];
+                q.push(cur * 2);
+            }
+        }
+    }
 }
 
 int main()
@@ -23,43 +57,14 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
 
-    string input;
-    cin >> input;
+    cin >> N >> K;
 
-    string bomb;
-    cin >> bomb;
+    road.resize(max(N, K) * 2 + 1);
+    visited.resize(max(N, K) * 2 + 1);
 
-    for (int i = 0; i < input.length(); i++)
-    {
-        PUSH(input[i]);
-        bool isBOMB = true;
-        if (sp >= bomb.length() - 1)
-        {
-            for (int j = sp, k = bomb.length() - 1; k >= 0; j--, k--)
-            {
-                if (stack[j] != bomb[k])
-                {
-                    isBOMB = false;
-                    break;
-                }
-            }
-            if (isBOMB)
-            {
-                for (int i = 0; i < bomb.length(); i++)
-                {
-                    POP();
-                }
-            }
-        }
-    }
+    BFS(N);
 
-    if (sp == -1)
-        cout << "FRULA";
-    else
-        for (int i = 0; i < stack.size(); i++)
-            cout << stack[i];
-
-    cout << "\n";
+    cout << road[K] - 1 << "\n";
 
     return 0;
 }
