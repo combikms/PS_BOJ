@@ -4,6 +4,7 @@
         "xtree": "cpp",
         "queue": "cpp",
         "ios": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "vector": "cpp"
     }
 }
