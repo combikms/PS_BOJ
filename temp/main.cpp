@@ -7,13 +7,11 @@ using namespace std;
 int N = 0;
 int K = 0;
 vector<int> road;
-vector<bool> visited;
 queue<int> q;
 
 void BFS(int start)
 {
     road[start] = 1;
-    visited[start] = true;
     q.push(start);
 
     while (!q.empty())
@@ -21,29 +19,29 @@ void BFS(int start)
         int cur = q.front();
         q.pop();
 
+        if (cur == K)
+            break;
+
         if (cur < K * 2 - 1)
         {
-            if (!visited[cur + 1])
+            if (road[cur + 1] == 0)
             {
-                visited[cur + 1] = true;
                 road[cur + 1] = road[cur] + 1;
                 q.push(cur + 1);
             }
         }
         if (cur > 0)
         {
-            if (!visited[cur - 1])
+            if (road[cur - 1] == 0)
             {
-                visited[cur - 1] = true;
                 road[cur - 1] = road[cur] + 1;
                 q.push(cur - 1);
             }
         }
         if (cur < K)
         {
-            if (!visited[cur * 2])
+            if (road[cur * 2] == 0)
             {
-                visited[cur * 2] = true;
                 road[cur * 2] = road[cur];
                 q.push(cur * 2);
             }
@@ -58,9 +56,7 @@ int main()
     cout.tie(NULL);
 
     cin >> N >> K;
-
     road.resize(max(N, K) * 2 + 1);
-    visited.resize(max(N, K) * 2 + 1);
 
     BFS(N);
 
