@@ -5,6 +5,8 @@
         "queue": "cpp",
         "ios": "cpp",
         "iostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "xlocale": "cpp",
+        "xstring": "cpp"
     }
 }
