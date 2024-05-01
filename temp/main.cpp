@@ -1,9 +1,46 @@
 #include <iostream>
 #include <vector>
-#include <queue>
-#include <algorithm>
 
 using namespace std;
+
+int N;
+vector<vector<char>> graph;
+vector<vector<bool>> visited;
+
+void DFS(int x, int y, char color)
+{
+    int dx[4] = {0, 0, -1, 1};
+    int dy[4] = {1, -1, 0, 0}; // 상하좌우
+
+    visited[x][y] = true;
+    for (int dir = 0; dir < 4; dir++)
+    {
+        int nx = x + dx[dir];
+        int ny = y + dy[dir];
+        if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny] && graph[nx][ny] == color)
+            DFS(nx, ny, color);
+    }
+}
+
+int countAreas(bool blind)
+{
+    visited.assign(N, vector<bool>(N, false));
+    int areas = 0;
+
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            if (!visited[i][j])
+            {
+                char cur_col = graph[i][j];
+                if (blind && (cur_col == 'R' || cur_col == 'G'))
+                    cur_col = 'R'; // R==G 로 취급함
+
+                DFS(i, j, cur_col);
+                areas++;
+            }
+
+    return areas;
+}
 
 int main()
 {
@@ -11,38 +48,14 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int N;
     cin >> N;
+    graph.resize(N, vector<char>(N));
 
-    vector<pair<int, int>> hw(N); // 마감일, 점수
     for (int i = 0; i < N; i++)
-        cin >> hw[i].first >> hw[i].second;
+        for (int j = 0; j < N; j++)
+            cin >> graph[i][j];
 
-    sort(hw.begin(), hw.end());                        // 일단 임박한 것부터 건드려보기
-    priority_queue<int, vector<int>, greater<int>> pq; // 덜 중요한 건 포기하기
-
-    for (int i = 0; i <= N; i++)
-    {
-        int score = hw[i].second;
-        int deadline = hw[i].first;
-
-        if (pq.size() < deadline)
-            pq.push(score);
-        else if (!pq.empty() && pq.top() < score)
-        {
-            pq.pop();
-            pq.push(score);
-        }
-    }
-
-    int sum = 0;
-    while (!pq.empty())
-    {
-        sum += pq.top();
-        pq.pop();
-    }
-
-    cout << sum << "\n";
+    cout << countAreas(false) << " " << countAreas(true) << "\n";
 
     return 0;
 }
