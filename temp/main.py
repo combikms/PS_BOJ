@@ -1,24 +1,24 @@
 import sys
-import copy
 import queue
 
-# 먼저 불부터 BFS 다 돌린다.
-# 그 다음에 사람 기준 BFS 돌린다.
-# => 그 과정에서 가장 빠른 탈출구가 나타날 시 거기를 불이랑 비교해본다.
-# => 불보다 빠르면 성공, 불이 더 빠르면 실패
+N, M = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range (N):
+    graph.append(list(map(int,sys.stdin.readline().split())))
 
-# 불이랑 상근이랑 다른 그래프 써야 할 것 같다
+# 그래프 최대 크기: 90,000
+# 각 높이들의 최대치: 10 => 순회 많이 해도 될 듯
 
-def BFS(graph, x, y, isFire):
-    q = queue.Queue()
+# 바다 BFS 과정에서 빙산을 좀 녹이고 본다.
+# 바다 BFS 끝나고 나면 Connected Component 수 체크 => 2 이상이면 흐른 시간 출력 및 종료
+
+def BFS_Ocean(graph, visited, x, y): # 일단은 바다용으로 생각
+    q = queue.Queue()    
     dx = [1, -1, 0, 0]
     dy = [0, 0, 1, -1]
 
-    visited = [ [False] * len(graph[0]) for _ in range (len(graph)) ]
-
     visited[y][x] = True
-    graph[y][x] = 0
-    q.put([x, y])    
+    q.put([x, y])
 
     while not q.empty():
         cx, cy = q.get()
@@ -27,57 +27,58 @@ def BFS(graph, x, y, isFire):
             ny = cy + dy[i]
 
             if 0 <= nx < len(graph[0]) and 0 <= ny < len(graph):
-                if isFire:
-                    if graph[ny][nx] != '#' and graph[ny][nx] != '*' and not visited[ny][nx]:
-                        if graph[ny][nx] == '.' or graph[ny][nx] == '@':
-                            graph[ny][nx] = graph[cy][cx] + 1     
-                        else:                        
-                            graph[ny][nx] = min(graph[ny][nx], graph[cy][cx] + 1)
-
+                if graph[ny][nx] != 0: # 지나가던 길에 육지가 있으면 녹인다
+                    visited[ny][nx] = True
+                    graph[ny][nx] -= 1
+                else: # 바다면 방문한다.
+                    if not visited[ny][nx]:
                         visited[ny][nx] = True
                         q.put([nx, ny])
-                else:
-                    if graph[ny][nx] == '.':
-                        graph[ny][nx] = graph[cy][cx] + 1
-                        visited[ny][nx] = True
-                        q.put([nx, ny])
-            else:
-                if not isFire: # 상근이가 탈출구 발견함
-                    return cx, cy
-    
-    return -1, -1
 
-                
+def BFS_Island(graph, visited, x, y):
+    q = queue.Queue()
+    dx = [1, -1, 0, 0]
+    dy = [0, 0, 1, -1]
 
-T = int(sys.stdin.readline())
-for _ in range (T):
-    w, h = map(int, sys.stdin.readline().split())
-    fire_graph = []
-    for _ in range (h):
-        fire_graph.append(list(map(str, sys.stdin.readline().strip())))
-    sang_graph = copy.deepcopy(fire_graph)
-    
-    fire_pos = []
-    sang_pos = []
+    visited[y][x] = True
+    q.put([x, y])
 
-    for y in range (h):
-        for x in range (w):
-            if fire_graph[y][x] == '*':
-                fire_pos.append([x, y])
-            elif fire_graph[y][x] == '@':
-                sang_pos.extend([x, y])
-    
-    for f in fire_pos:
-        BFS(fire_graph, f[0], f[1], True)
+    while not q.empty():
+        cx, cy = q.get()
+        for i in range (4):
+            nx = cx + dx[i]
+            ny = cy + dy[i]
+
+            if 0 <= nx < len(graph[0]) and 0 <= ny < len(graph):
+                if not visited[ny][nx] and graph[ny][nx] != 0:
+                    visited[ny][nx] = True
+                    q.put([nx, ny])
+
+ans = 0
+while True:
+    # 섬 개수 체크
+    components = 0    
+    visited_island = [ [False] * len(graph[0]) for _ in range (len(graph)) ]
+    for y in range (N): 
+        for x in range (M):
+            if graph[y][x] != 0:
+                if not visited_island[y][x]:
+                    BFS_Island(graph, visited_island, x, y)                    
+                    components += 1
         
-    ex, ey = BFS(sang_graph, sang_pos[0], sang_pos[1], False)
+    if components >= 2:
+        break
+    elif components == 0:
+        ans = 0
+        break
+    
+    visited_ocean = [ [False] * len(graph[0]) for _ in range (len(graph)) ]
+    for y in range (N): 
+        for x in range (M):            
+            if graph[y][x] == 0:
+                if not visited_ocean[y][x]:
+                    BFS_Ocean(graph, visited_ocean, x, y)
+        
+    ans += 1    
 
-    if ex == -1:
-        sys.stdout.write("IMPOSSIBLE\n")
-    else:
-        if not isinstance(fire_graph[ey][ex], (int, float)):
-            sys.stdout.write(str(sang_graph[ey][ex] + 1) + '\n')
-        elif sang_graph[ey][ex] < fire_graph[ey][ex]:
-            sys.stdout.write(str(sang_graph[ey][ex] + 1) + '\n')
-        else:
-            sys.stdout.write("IMPOSSIBLE\n")
+sys.stdout.write(str(ans) + '\n')
