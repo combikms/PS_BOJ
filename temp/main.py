@@ -55,8 +55,8 @@ def BFS_Island(graph, visited, x, y):
                     q.put([nx, ny])
 
 ans = 0
-while True:
-    # 섬 개수 체크
+while True: # 최대 10번
+    # 섬 개수 체크 O(810,000)
     components = 0    
     visited_island = [ [False] * len(graph[0]) for _ in range (len(graph)) ]
     for y in range (N): 
@@ -71,7 +71,8 @@ while True:
     elif components == 0:
         ans = 0
         break
-    
+
+    # 녹이기 O(810,000)
     visited_ocean = [ [False] * len(graph[0]) for _ in range (len(graph)) ]
     for y in range (N): 
         for x in range (M):            
