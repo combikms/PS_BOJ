@@ -1,18 +1,16 @@
 import sys
 
-N, M = map(int, sys.stdin.readline().split())
-graph = []
-for _ in range (N): graph.append(list(map(int, sys.stdin.readline().split())))
+N, K = map(int, sys.stdin.readline().split())
 
-dp = [[0] * M for _ in range (N)]
-dp[0][0] = graph[0][0]
-for R in range (N):
-    for C in range (M):
-        if 0 <= C - 1 < M:
-            dp[R][C] = max(dp[R][C], dp[R][C - 1] + graph[R][C])
-        if 0 <= R - 1 < N:
-            dp[R][C] = max(dp[R][C], dp[R - 1][C] + graph[R][C])
-        if 0 <= C - 1 < M and 0 <= R - 1 < N:
-            dp[R][C] = max(dp[R][C], dp[R - 1][C - 1] + graph[R][C])
+# dp[i][k]: i를 k개 숫자의 합으로 분해하는 방법의 수
 
-sys.stdout.write(str(dp[N - 1][M - 1]) + '\n')
+dp = [[0] * (K) for _ in range (N + 1)]
+for n in dp:
+    n[0] = 1
+
+for i in range (0, N + 1):
+    for j in range ((N + 1) - i):
+        for k in range (K - 1):
+            dp[i + j][k + 1] += dp[i][k]
+
+sys.stdout.write(str(dp[N][K - 1] % 1000000000) + '\n')
