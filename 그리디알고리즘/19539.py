@@ -1,49 +1,16 @@
 import sys
-import heapq
 
 N = int(sys.stdin.readline())
-h = list(map(int, sys.stdin.readline().split()))
-for i in range(len(h)):
-    h[i] = -h[i]
-heapq.heapify(h)
+tree = list(map(int, sys.stdin.readline().split()))
 
-
-def push(a):
-    heapq.heappush(h, -a)
-
-
-def pop():
-    return -heapq.heappop(h)
-
-
-# 앞에 있는 두 놈 끄집어다가 2, 1로 키울 수 있는 만큼 키우기
-
-while len(h) >= 2:    
-
-    temp = sorted(h)
-    print(temp)
-    
-    t1 = pop()
-    if t1 == 1:
-        break
-        
-    t2 = pop()
-    cnt = min(t1 // 2, t2)
-
-    t1 -= 2 * cnt
-    t2 -= cnt
-
-    if t1 > 0:
-        push(t1)
-    if t2 > 0:
-        push(t2)
-
-if h:
-    if pop() % 3 == 0:
-        sys.stdout.write("YES\n")
-    else:
-        sys.stdout.write("NO\n")
+sum_tree = sum(tree)
+if sum_tree % 3 != 0:
+    sys.stdout.write("NO\n")
 else:
-    sys.stdout.write("YES\n")
-
-# 1 1 1 1 1 1
+    twos = 0
+    for h in tree:
+        twos += h // 2
+    if sum_tree // 3 <= twos:
+        sys.stdout.write("YES\n")
+    else:  # 번복 기회가 부족하여 높이를 맞춰줄 수 없다.
+        sys.stdout.write("NO\n")
